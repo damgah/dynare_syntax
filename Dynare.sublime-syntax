@@ -46,6 +46,8 @@ contexts:
           pop: true
     - match: (%).*$\n?
       scope: comment.line.percentage.dynare
+    - match: (//).*$\n?
+      scope: comment.line.percentage.dynare
 
   keywords:
     - match: \b({{command_keywords}})\b
@@ -97,7 +99,7 @@ contexts:
 
   blocks:
     - match: \b(model|initval|endval|histval|shocks|mshocks|homotopy_setup|steady_state_model|observation_trends|estimated_params|estimated_params_init|estimated_params_bounds|shock_groups|conditional_forecast_paths|optim_weights|osr_params_bounds|ramsey_constraints|irf_calibration|moment_calibration|svar_identification|end)\b
-      scope: string.other.link.block.dynare
+      scope: keyword.operator.function.dynare
 
   number:
     - match: '(?<=[\s\-\+\*\/\\=:\[\(\{,]|^)\d*\.?\d+([eE][+-]?\d)?([0-9&&[^\.]])*(i|j)?\b'
