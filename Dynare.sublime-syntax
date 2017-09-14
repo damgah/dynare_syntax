@@ -1,0 +1,124 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Dynare
+file_extensions:
+  - mod
+scope: source.dynare
+
+variables:
+  command_keywords:                     'var|varexo|varexo_det|parameters|change_type|predetermined_variables|trend_var|log_trend_var|dsample|periods'
+  model_declaration_command_keywords:   'write_latex_original_model|write_latex_dynamic_model|write_latex_static_model'
+  initial_terminal_command_keywords:    'resid|initval_file|histval_file'
+  steady_state_command_keywords:        'steady'
+  model_info_command_keywords:          'check|model_diagnostics|model_info|print_bytecode_dynamic_model|print_bytecode_static_model'
+  simulation_command_keywords:          'perfect_foresight_setup|perfect_foresight_solver|simul|stoch_simul|extended_path'
+  estimation_command_keywords:          'varobs|estimation|unit_root_vars|bvar_density'
+  model_comparison_command_keywords:    'model_comparison'
+  shock_decomposition_command_keywords: 'shock_decomposition|realtime_shock_decomposition|plot_shock_decomposition'
+  calibrated_smoother_command_keywords: 'calib_smoother'
+  forecasting_command_keywords:         'forecast|conditional_forecast|plot_conditional_forecast|bvar_forecast|smoother2histval|init_plan|basic_plan|flip_plan|det_cond_forecast'
+  optimal_policy_command_keywords:      'osr|osr_params|ramsey_model|ramsey_policy|discretionary_policy|planner_objective'
+  sensitivity_command_keywords:         'dynare_sensitivity|identification'
+  markov_switching_command_keywords:    'markov_switching|svar|sbvar|ms_estimation|ms_simulation|ms_compute_mdd|ms_compute_probabilities|ms_irf|ms_forecast|ms_variance_decomposition'
+  saving_results_command_keywords:      'rplot|dynatype|dynasave'
+
+contexts:
+  main:
+    - include: comments
+    - include: keywords
+    - include: operators
+    - include: functions
+    - include: blocks
+    - include: number
+    - include: string
+    - include: latex_string
+
+  comments:
+    - match: ^/\* =(\s*.*?)\s*= \*/$\n?
+      scope: comment.block.dynare
+    - match: /\*
+      scope: punctuation.definition.comment.dynare
+      push:
+        - meta_scope: comment.block.dynare
+        - match: \*/
+          scope: punctuation.definition.comment.dynare
+          pop: true
+    - match: (%).*$\n?
+      scope: comment.line.percentage.dynare
+
+  keywords:
+    - match: \b({{command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{model_declaration_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{initial_terminal_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{steady_state_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{model_info_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{simulation_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{estimation_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{model_comparison_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{shock_decomposition_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{calibrated_smoother_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{forecasting_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{optimal_policy_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{sensitivity_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{markov_switching_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b({{saving_results_command_keywords}})\b
+      scope: keyword.command.dynare
+    - match: \b(inf|nan)\b
+      scope: keyword.constant.dynare
+
+  operators:
+    - match: \=
+      scope: keyword.operator.assignment.dynare
+    - match: \+|\-|\*|/|\^
+      scope: keyword.operator.arithmetic.dynare
+    - match: <\=|>\=|\=\=|<|>|\!\=
+      scope: keyword.operator.comparison.dynare
+    - match: \b(STEADY_STATE|EXPECTATION)\b
+      scope: keyword.operator.function.dynare
+
+  functions:
+    - match: \b(exp|log|ln|log10|sqrt|abs|sign|sin|cos|tan|asin|acos|atan|max|min|normcdf|normpdf|erf|external_function)\b
+      scope: entity.name.function.mathematics.dynare
+
+  blocks:
+    - match: \b(model|initval|endval|histval|shocks|mshocks|homotopy_setup|steady_state_model|observation_trends|estimated_params|estimated_params_init|estimated_params_bounds|shock_groups|conditional_forecast_paths|optim_weights|osr_params_bounds|ramsey_constraints|irf_calibration|moment_calibration|svar_identification|end)\b
+      scope: string.other.link.block.dynare
+
+  number:
+    - match: '(?<=[\s\-\+\*\/\\=:\[\(\{,]|^)\d*\.?\d+([eE][+-]?\d)?([0-9&&[^\.]])*(i|j)?\b'
+      comment: "Valid numbers: 1, .1, 1.1, .1e1, 1.1e1, 1e1, 1i, 1j, 1e2j"
+      scope: constant.numeric.dynare
+
+  string:
+    - match: '((?<=(\[|\(|\{|=|\s|;|:|,))|^)'''
+      scope: string.begin.dynare
+      push:
+        - meta_scope: string.quoted.single.dynare
+        - match: '''(?=(\]|\)|\}|=|~|<|>|&|\||-|\+|\*|\.|\^|\||\s|;|:|,))'
+          scope: string.end.dynare
+          pop: true
+
+  latex_string:
+    - match: '(L|u8|u|U)?(\$\{)'
+      scope: string.begin.dynare
+      push:
+        - meta_scope: string.dynare
+        - match: '(\}\$)'
+          scope: string.end.dynare
+          pop: true
+
