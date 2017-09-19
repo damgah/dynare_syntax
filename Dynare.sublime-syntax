@@ -7,7 +7,7 @@ file_extensions:
 scope: source.dynare
 
 variables:
-  command_keywords:                     'var|varexo|varexo_det|parameters|change_type|predetermined_variables|trend_var|log_trend_var|dsample|periods'
+  command_keywords:                     'var|varexo|varexo_det|parameters|change_type|predetermined_variables|trend_var|log_trend_var|dsample|periods|values'
   model_declaration_command_keywords:   'write_latex_original_model|write_latex_dynamic_model|write_latex_static_model'
   initial_terminal_command_keywords:    'resid|initval_file|histval_file'
   steady_state_command_keywords:        'steady'
